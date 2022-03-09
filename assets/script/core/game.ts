@@ -5,11 +5,20 @@ import EventType from "../events/event-enum";
 import Land from "./land";
 import Pipe from "./pipe";
 import Score from "./score";
-import { getQuery, playEffect } from "../util";
+import { getQuery } from "../util";
+import { audioManager } from "../audio-manager";
 
 const {ccclass, property} = cc._decorator;
 
 const mode = getQuery()?.mode as GameMode ?? GameMode.Normal;
+
+const soundEffects = [
+	SoundEffect.Die,
+	SoundEffect.Hit,
+	SoundEffect.Point,
+	SoundEffect.Swooshing,
+	SoundEffect.Wing
+]
 
 @ccclass
 export default class Game extends cc.Component {
@@ -51,6 +60,8 @@ export default class Game extends cc.Component {
 		// 开启物理引擎
 		this._pm.enabled = true;
 		this._pm.gravity = cc.v2(0, 0);
+		// 预加载所有音效
+		soundEffects.forEach(effect => audioManager.preloadEffect(effect));
 	}
 
 	start () {
@@ -101,7 +112,7 @@ export default class Game extends cc.Component {
 		this.birdComp.getReady();
 		this.landComp.begin();
 		this.readyNode.active = true;
-		playEffect(SoundEffect.Swooshing);
+		audioManager.playEffect(SoundEffect.Swooshing);
 	}
 
 	startGame() {
@@ -125,7 +136,7 @@ export default class Game extends cc.Component {
 			if (mode === GameMode.Normal) {
 				this.endGame();
 			}
-			playEffect(SoundEffect.Hit);
+			audioManager.playEffect(SoundEffect.Hit);
 		}
 	}
 
@@ -145,7 +156,7 @@ export default class Game extends cc.Component {
 		this.scoreComp.end();
 		// this.birdComp.setActive(false);
 		this.scheduleOnce(() => {
-			playEffect(SoundEffect.Die);
+			audioManager.playEffect(SoundEffect.Die);
 		}, 0.2);
 	}
 

@@ -1,7 +1,7 @@
+import { audioManager } from "../audio-manager";
 import { BGWidth, birdWidth, GameState, SoundEffect } from "../const";
 import bus from "../events/bus";
 import EventType from "../events/event-enum";
-import { playEffect } from "../util";
 import Game from "./game";
 
 const {ccclass, property} = cc._decorator;
@@ -29,7 +29,7 @@ export default class Bird extends cc.Component {
   jump () {
     this.rigidComp.linearVelocity = cc.v2(0, 300);
     this.rigidComp.angularVelocity = 0;
-    playEffect(SoundEffect.Wing);
+    audioManager.playEffect(SoundEffect.Wing);
       this.birdNode.angle = 30;
     this._rotateTween?.stop();
     this._rotateTween = cc.tween(this.birdNode).delay(0.5).to(0.3, {angle: -30}).start();
