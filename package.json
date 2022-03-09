@@ -1,7 +1,7 @@
 {
   "name": "flappy_bird",
   "version": "1.0.0",
-  "description": "a interesting game flappy bird",
+  "description": "an interesting game flappy bird",
   "main": "index.js",
   "author": "machong",
   "license": "MIT",
