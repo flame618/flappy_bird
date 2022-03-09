@@ -1,7 +1,6 @@
-import { BGHeight, BGWidth, landHeight, landMoveDistance, moveSpeed, pipeWidth } from "../const";
-import bus from "../events/bus";
-import EventType from "../events/event-enum";
-import Score from "./score";
+import { BGHeight, BGWidth, landHeight, moveSpeed, pipeWidth } from "../const";
+import bus from "../event/bus";
+import EventType from "../event/event-type";
 
 const {ccclass, property} = cc._decorator;
 
@@ -56,8 +55,8 @@ export default class Pipe extends cc.Component {
   }
 
   handlePipe() {
-    const gap = this.getRandNumber(100, 200);
-    const maxUpY = BGHeight / 2 - 30, minDownY = (-BGHeight / 2) + landHeight + 30;
+    const gap = this.getRandNumber(90, 120);
+    const maxUpY = BGHeight / 2 - 50, minDownY = (-BGHeight / 2) + landHeight + 50;
     const minUpY = minDownY + gap;
     const upY = this.getRandNumber(minUpY, maxUpY);
     const downY = upY - gap;
@@ -101,5 +100,4 @@ export default class Pipe extends cc.Component {
     this.pool.clear();
     this.unscheduleAllCallbacks();
   }
-
 }

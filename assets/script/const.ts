@@ -37,7 +37,7 @@ export enum GameMode {
 	/** 常规版 */
 	Normal = 'normal',
 	/** 沙雕版 */
-	Idiot = 'idiot'
+	Easy = 'easy'
 }
 
 export enum SoundEffect {

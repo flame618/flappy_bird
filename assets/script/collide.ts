@@ -1,5 +1,5 @@
-import bus from "./events/bus";
-import EventType from "./events/event-enum";
+import bus from "./event/bus";
+import EventType from "./event/event-type";
 
 const { ccclass } = cc._decorator;
 

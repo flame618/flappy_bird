@@ -1,7 +1,7 @@
 import Bird from "./bird";
 import { GameMode, GameState, SoundEffect } from "../const";
-import bus from "../events/bus";
-import EventType from "../events/event-enum";
+import bus from "../event/bus";
+import EventType from "../event/event-type";
 import Land from "./land";
 import Pipe from "./pipe";
 import Score from "./score";
@@ -94,7 +94,7 @@ export default class Game extends cc.Component {
 	private _onBGClick() {
 		if (this.gameState === GameState.Before) {
 			this.beforeContainer.active = false;
-			this._pm.gravity = cc.v2(0, -800);
+			this._pm.gravity = cc.v2(0, -1000);
 			this.getReady();
 		} else if (this.gameState === GameState.Ready) {
 			this.startGame();
@@ -140,11 +140,13 @@ export default class Game extends cc.Component {
 				this.endGame();
 			}
 			audioManager.playEffect(SoundEffect.Hit);
+			// 小鸟被碰撞后，需要停止正在执行的动画，只展现碰撞效果
+			this.birdComp.stopTween();
 		}
 	}
 
 	onBirdLeaveBG() {
-		if (this.gameState === GameState.Playing && mode === GameMode.Idiot) {
+		if (this.gameState === GameState.Playing && mode === GameMode.Easy) {
 			this.endGame();
 		}
 	}

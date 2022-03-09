@@ -1,7 +1,7 @@
 import { audioManager } from "../audio-manager";
-import { BGWidth, birdWidth, GameState, SoundEffect } from "../const";
-import bus from "../events/bus";
-import EventType from "../events/event-enum";
+import { BGWidth, GameState, SoundEffect } from "../const";
+import bus from "../event/bus";
+import EventType from "../event/event-type";
 import Game from "./game";
 
 const {ccclass, property} = cc._decorator;
@@ -18,7 +18,9 @@ export default class Bird extends cc.Component {
 
   initPosition: cc.Vec2 = null;
 
-  private _rotateTween: cc.Tween<cc.Node> = null;
+  private _jumpRotateTween: cc.Tween<cc.Node> = null;
+
+  private _dropRotateTween: cc.Tween<cc.Node> = null;
 
   start() {
     this.rigidComp = this.birdNode.getComponent(cc.RigidBody);
@@ -28,11 +30,11 @@ export default class Bird extends cc.Component {
 
   jump () {
     this.rigidComp.linearVelocity = cc.v2(0, 300);
+    this.stopTween();
+    this._jumpRotateTween = cc.tween(this.birdNode).to(0.1, {angle: 30}).start();
     this.rigidComp.angularVelocity = 0;
     audioManager.playEffect(SoundEffect.Wing);
-      this.birdNode.angle = 30;
-    this._rotateTween?.stop();
-    this._rotateTween = cc.tween(this.birdNode).delay(0.5).to(0.3, {angle: -30}).start();
+    this._dropRotateTween = cc.tween(this.birdNode).delay(0.6).to(0.3, {angle: -90}).start();
   }
 
   getReady() {
@@ -58,7 +60,12 @@ export default class Bird extends cc.Component {
     this.setActive(true);
     this.rigidComp.angularVelocity = 0;
     this.birdNode.angle = 0;
-    this._rotateTween.stop();
+    this.stopTween();
+  }
+
+  stopTween() {
+    this._jumpRotateTween?.stop();
+    this._dropRotateTween?.stop();
   }
 
   update() {
