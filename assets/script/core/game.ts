@@ -44,6 +44,9 @@ export default class Game extends cc.Component {
 	@property(cc.Node)
 	playNode: cc.Node = null;
 
+	@property(cc.Node)
+	maskNode: cc.Node = null;
+
 	gameState: GameState = GameState.Before;
 
 	private _pm = cc.director.getPhysicsManager();
@@ -146,12 +149,22 @@ export default class Game extends cc.Component {
 		}
 	}
 
+	setMask(show: boolean) {
+		this.maskNode.active = show;
+	}
+
 	endGame() {
 		this.gameState = GameState.End;
 		cc.Tween.stopAll();
 		this.pipeComp.end();
 		const animComp = this.finishedContainer.getComponent(cc.Animation);
+		// 播放动画前先给场景加上遮罩，防止用户点击导致意外bug
+		this.setMask(true);
 		animComp.play();
+		animComp.on('finished', () => {
+			// 动画播放完成去除场景遮罩
+			this.setMask(false);
+		})
 		// this.finishedContainer.active = true;
 		this.scoreComp.end();
 		// this.birdComp.setActive(false);
