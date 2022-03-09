@@ -1,3 +1,5 @@
+import { SoundEffect } from "./const";
+
 export function loadDirResource<T extends cc.Asset>(
   dir: string,
   type: typeof cc.Asset
@@ -22,4 +24,21 @@ export function getQuery(): Record<string, string> {
     params[key] = value;
   }
   return params;
+}
+
+const _urlClipMap: Record<SoundEffect, cc.AudioClip> | {} = {};
+
+export function playEffect(url: SoundEffect) {
+  if (_urlClipMap[url]) {
+    cc.audioEngine.playEffect(_urlClipMap[url], false);
+    return;
+  }
+  cc.resources.load<cc.AudioClip>(url, cc.AudioClip, (err, clip) => {
+    if (err) {
+      throw err;
+    } else {
+      _urlClipMap[url] = clip;
+      cc.audioEngine.playEffect(clip, false);
+    }
+  })
 }

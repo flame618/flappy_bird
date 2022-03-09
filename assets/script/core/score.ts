@@ -1,4 +1,5 @@
-import { loadDirResource } from "../util";
+import { SoundEffect } from "../const";
+import { loadDirResource, playEffect } from "../util";
 
 const {ccclass, property} = cc._decorator;
 
@@ -60,6 +61,7 @@ export default class Score extends cc.Component {
   /** 分数加1 */
   addScore() {
     this.score++
+    playEffect(SoundEffect.Point);
   }
 
   /** 获取当前分数 */

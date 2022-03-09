@@ -40,3 +40,11 @@ export enum GameMode {
 	Idiot = 'idiot'
 }
 
+export enum SoundEffect {
+	Die = 'audio/die',
+	Hit = 'audio/hit',
+	Point = 'audio/point',
+	Swooshing = 'audio/swooshing',
+	Wing = 'audio/wing'
+}
+

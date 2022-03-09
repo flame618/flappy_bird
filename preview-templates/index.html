@@ -1,12 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>flappy bird</title>
+  <link rel="icon" href="app/editor/static/preview-templates/favicon.ico"></link>
+  <meta charset="utf-8">
+  <title><%=title%></title>
+  <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
-  加载中...
+  <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
+  <div id="splash">
+    <div class="progress-box">
+      <div class="progress-bar">
+        <img src="./bird.png" />
+      </div>
+    </div>
+  </div>
+<script src="settings.js" charset="utf-8"></script>
+<script src="boot.js" charset="utf-8"></script>
+<script src="/socket.io/socket.io.js" charset="utf-8"></script>
+<script src="app/engine/bin/<%=cocos2d%>"</script> charset="utf-8"></script>
+<script src="preview-scripts/__quick_compile__.js" charset="utf-8"></script>
 </body>
 </html>

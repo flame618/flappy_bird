@@ -43,8 +43,10 @@
 <body>
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
   <div id="splash">
-    <div class="progress-bar stripes">
-      <span style="width: 0%"></span>
+    <div class="progress-box">
+      <div class="progress-bar">
+        <img src="./bird.png" />
+      </div>
     </div>
   </div>
 
@@ -60,8 +62,8 @@
     }
 
     var debug = window._CCSettings.debug;
-    var splash = document.getElementById('splash');
-    splash.style.display = 'block';
+    // var splash = document.getElementById('splash');
+    // splash.style.display = 'block';
 
     function loadScript (moduleName, cb) {
       function scriptLoaded () {

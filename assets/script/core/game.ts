@@ -1,11 +1,11 @@
 import Bird from "./bird";
-import { GameMode, GameState } from "../const";
+import { GameMode, GameState, SoundEffect } from "../const";
 import bus from "../events/bus";
 import EventType from "../events/event-enum";
 import Land from "./land";
 import Pipe from "./pipe";
 import Score from "./score";
-import { getQuery } from "../util";
+import { getQuery, playEffect } from "../util";
 
 const {ccclass, property} = cc._decorator;
 
@@ -101,6 +101,7 @@ export default class Game extends cc.Component {
 		this.birdComp.getReady();
 		this.landComp.begin();
 		this.readyNode.active = true;
+		playEffect(SoundEffect.Swooshing);
 	}
 
 	startGame() {
@@ -120,8 +121,11 @@ export default class Game extends cc.Component {
 	}
 
 	onBirdCollide() {
-		if (this.gameState === GameState.Playing && mode === GameMode.Normal) {
-			this.endGame();
+		if (this.gameState === GameState.Playing) {
+			if (mode === GameMode.Normal) {
+				this.endGame();
+			}
+			playEffect(SoundEffect.Hit);
 		}
 	}
 
@@ -140,6 +144,9 @@ export default class Game extends cc.Component {
 		// this.finishedContainer.active = true;
 		this.scoreComp.end();
 		// this.birdComp.setActive(false);
+		this.scheduleOnce(() => {
+			playEffect(SoundEffect.Die);
+		}, 0.2);
 	}
 
 	onDestroy() {

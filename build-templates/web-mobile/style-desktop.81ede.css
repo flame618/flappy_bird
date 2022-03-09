@@ -55,44 +55,23 @@ p.footer {
 }
 
 #splash {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-
-  background: #171717 no-repeat center;
-  background-size: 350px;
+  background: rgb(141, 200, 195);
 }
 
-.progress-bar {
-    background-color: #1a1a1a;
-    position: absolute;
-    left: 50%;
-    top: 80%;
-    height: 5px;
-    width: 300px;
-    margin: 0 -150px;
-    border-radius: 5px;
-    box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;           
-}
-
-.progress-bar span {
-    display: block;
-    height: 100%;
-    border-radius: 5px;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
-    transition: width .4s ease-in-out; 
-    background-color: #3dc5de;
-}
-
-.stripes span {
-    background-size: 30px 30px;
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%,
-                        transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%,
-                        transparent 75%, transparent);            
-    
-    animation: animate-stripes 1s linear infinite;             
+.progress-box {
+  width: 100%;
+  height: 30px;
+  border: 2px rgb(208, 212, 75) solid;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  padding-right: 40px;
 }
 
 @keyframes animate-stripes {
