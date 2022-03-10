@@ -1,16 +1,13 @@
 import Bird from "./bird";
-import { GameMode, GameState, SoundEffect } from "../const";
+import { GameMode, GameState, gameMode, SoundEffect } from "../const";
 import bus from "../event/bus";
 import EventType from "../event/event-type";
 import Land from "./land";
 import Pipe from "./pipe";
 import Score from "./score";
-import { getQuery } from "../util";
 import { audioManager } from "../audio-manager";
 
 const {ccclass, property} = cc._decorator;
-
-const mode = getQuery()?.mode as GameMode ?? GameMode.Normal;
 
 const soundEffects = [
 	SoundEffect.Die,
@@ -63,6 +60,9 @@ export default class Game extends cc.Component {
 		// 开启物理引擎
 		this._pm.enabled = true;
 		this._pm.gravity = cc.v2(0, 0);
+		this._pm.debugDrawFlags =
+		cc.PhysicsManager.DrawBits.e_jointBit
+		| cc.PhysicsManager.DrawBits.e_shapeBit;
 		// 预加载所有音效
 		soundEffects.forEach(effect => audioManager.preloadEffect(effect));
 	}
@@ -136,7 +136,7 @@ export default class Game extends cc.Component {
 
 	onBirdCollide() {
 		if (this.gameState === GameState.Playing) {
-			if (mode === GameMode.Normal) {
+			if (gameMode === GameMode.Normal) {
 				this.endGame();
 			}
 			audioManager.playEffect(SoundEffect.Hit);
@@ -146,7 +146,7 @@ export default class Game extends cc.Component {
 	}
 
 	onBirdLeaveBG() {
-		if (this.gameState === GameState.Playing && mode === GameMode.Easy) {
+		if (this.gameState === GameState.Playing) {
 			this.endGame();
 		}
 	}
@@ -167,9 +167,7 @@ export default class Game extends cc.Component {
 			// 动画播放完成去除场景遮罩
 			this.setMask(false);
 		})
-		// this.finishedContainer.active = true;
 		this.scoreComp.end();
-		// this.birdComp.setActive(false);
 		this.scheduleOnce(() => {
 			audioManager.playEffect(SoundEffect.Die);
 		}, 0.2);

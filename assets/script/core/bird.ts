@@ -1,8 +1,9 @@
 import { audioManager } from "../audio-manager";
-import { BGWidth, GameState, SoundEffect } from "../const";
+import { BGHeight, BGWidth, GameState, SoundEffect } from "../const";
 import bus from "../event/bus";
 import EventType from "../event/event-type";
 import Game from "./game";
+import Pipe from "./pipe";
 
 const {ccclass, property} = cc._decorator;
 
@@ -16,6 +17,8 @@ export default class Bird extends cc.Component {
 
   gameComp: Game = null;
 
+  pipeComp: Pipe = null;
+
   initPosition: cc.Vec2 = null;
 
   private _jumpRotateTween: cc.Tween<cc.Node> = null;
@@ -25,6 +28,7 @@ export default class Bird extends cc.Component {
   start() {
     this.rigidComp = this.birdNode.getComponent(cc.RigidBody);
     this.gameComp = this.getComponent(Game);
+    this.pipeComp = this.getComponent(Pipe);
     this.initPosition = this.birdNode.getPosition();
   }
 
@@ -69,9 +73,11 @@ export default class Bird extends cc.Component {
   }
 
   update() {
-    if (this.gameComp.gameState === GameState.Playing && this.birdNode.x < -(BGWidth + 2) / 2) {
-      // 小鸟完全超出背景左边界
-      bus.emit(EventType.BirdLeaveBG);
+    if (this.gameComp.gameState === GameState.Playing) {
+      if (this.birdNode.x < -(BGWidth + 2) / 2 || this.birdNode.y > BGHeight / 2 + 100) {
+        // 小鸟飞出背景边界, 飞出左边界秒死，飞出上边界有100px的缓冲
+        bus.emit(EventType.BirdLeaveBG);
+      }
     }
   }
 }

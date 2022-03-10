@@ -1,3 +1,5 @@
+import { getQuery } from "./util";
+
 /** 背景宽度 */
 export const BGWidth = 288;
 
@@ -47,4 +49,6 @@ export enum SoundEffect {
 	Swooshing = 'audio/swooshing',
 	Wing = 'audio/wing'
 }
+
+export const gameMode = getQuery()?.mode as GameMode ?? GameMode.Normal;
 
