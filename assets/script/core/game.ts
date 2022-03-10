@@ -60,9 +60,9 @@ export default class Game extends cc.Component {
 		// 开启物理引擎
 		this._pm.enabled = true;
 		this._pm.gravity = cc.v2(0, 0);
-		this._pm.debugDrawFlags =
-		cc.PhysicsManager.DrawBits.e_jointBit
-		| cc.PhysicsManager.DrawBits.e_shapeBit;
+		// this._pm.debugDrawFlags =
+		// cc.PhysicsManager.DrawBits.e_jointBit
+		// | cc.PhysicsManager.DrawBits.e_shapeBit;
 		// 预加载所有音效
 		soundEffects.forEach(effect => audioManager.preloadEffect(effect));
 	}
