@@ -19,15 +19,17 @@ export default class Score extends cc.Component {
   @property(cc.Node)
   medalNode: cc.Node = null;
 
+  /** 对应的sprite frames(图片渲染对象) */
   private _scoreNumberFrames: cc.SpriteFrame[] = null;
 
+  /** 🏅对应的sprite frames(图片渲染对象)  */
   private _medalFrames: cc.SpriteFrame[] = null;
 
   /** 当前获得的分数 */
   private _score = 0;
 
   /** 最高分数 */
-  private bestScore = 0;
+  private _bestScore = 0;
 
   set score(value) {
     this._score = value;
@@ -70,18 +72,11 @@ export default class Score extends cc.Component {
     return this.score;
   }
 
-  _getSplitScoreNumbers(score) {
-    if (score === 0) return [0];
-    const numbers: number[] = [];
-    let _score = score;
-    while(_score) {
-      const v = _score % 10;
-      _score = Math.floor(_score / 10);
-      numbers.push(v);
-    }
-    return numbers.reverse();
-  }
-
+  /**
+   * 渲染分数
+   * @param container 分数容器节点
+   * @param score 分数数值
+   */
   renderScore(container: cc.Node, score: number) {
     const numbers = this._getSplitScoreNumbers(score);
     const sub = numbers.length - container.childrenCount;
@@ -103,6 +98,7 @@ export default class Score extends cc.Component {
     })
   }
 
+  /** 渲染🏅 */
   renderMedal() {
     const spriteComp = this.medalNode.getComponent(cc.Sprite);
     spriteComp.spriteFrame = this._medalFrames[this._getMedalLevel()];
@@ -110,12 +106,12 @@ export default class Score extends cc.Component {
 
   renderScorePanelContent() {
     this.renderScore(this.finishScoreNode, this.score);
-    this.renderScore(this.bestScoreNode, this.bestScore);
+    this.renderScore(this.bestScoreNode, this._bestScore);
     this.renderMedal();
   }
 
   end() {
-    this.bestScore = Math.max(this.bestScore, this.score);
+    this._bestScore = Math.max(this._bestScore, this.score);
     this.renderScorePanelContent();
     this.scoreNode.active = false;
   }
@@ -125,9 +121,9 @@ export default class Score extends cc.Component {
   }
   
   /**
-   * 获取🏆等级
+   * 获取🏅等级
    */
-  _getMedalLevel() {
+  private _getMedalLevel() {
     if (this.score < 10) {
       return 0;
     } else if (this.score < 50) {
@@ -137,5 +133,22 @@ export default class Score extends cc.Component {
     } else if (this.score < 800) {
       return 3;
     }
+  }
+
+  /**
+   * 获取分数数字的拆分数组, 比如231拆分为[2, 3, 1]
+   * @param score 
+   * @returns 
+   */
+  private _getSplitScoreNumbers(score) {
+    if (score === 0) return [0];
+    const numbers: number[] = [];
+    let _score = score;
+    while(_score) {
+      const v = _score % 10;
+      _score = Math.floor(_score / 10);
+      numbers.push(v);
+    }
+    return numbers.reverse();
   }
 }

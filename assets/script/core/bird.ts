@@ -32,6 +32,7 @@ export default class Bird extends cc.Component {
     this.initPosition = this.birdNode.getPosition();
   }
 
+  /** 跳跃 */
   jump () {
     this.rigidComp.linearVelocity = cc.v2(0, 300);
     this.stopTween();
@@ -41,12 +42,14 @@ export default class Bird extends cc.Component {
     this._dropRotateTween = cc.tween(this.birdNode).delay(0.6).to(0.3, {angle: -90}).start();
   }
 
+  /** 进入ready状态 */
   getReady() {
     const animComp = this.birdNode.getComponent(cc.Animation);
     animComp.play('bird_float');
     this.rigidComp.gravityScale = 0;
   }
 
+  /** 开始游戏 */
   begin() {
     const animComp = this.birdNode.getComponent(cc.Animation);
     animComp.play('bird_fly');
@@ -59,6 +62,7 @@ export default class Bird extends cc.Component {
     this.rigidComp.linearVelocity = cc.v2(0, 0);
   }
 
+  /** 重置 */
   reset() {
     this.birdNode.setPosition(this.initPosition);
     this.setActive(true);
@@ -67,6 +71,7 @@ export default class Bird extends cc.Component {
     this.stopTween();
   }
 
+  /** 结束动画 */
   stopTween() {
     this._jumpRotateTween?.stop();
     this._dropRotateTween?.stop();

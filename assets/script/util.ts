@@ -1,5 +1,3 @@
-import { SoundEffect } from "./const";
-
 export function loadDirResource<T extends cc.Asset>(
   dir: string,
   type: typeof cc.Asset
@@ -24,4 +22,8 @@ export function getQuery(): Record<string, string> {
     params[key] = value;
   }
   return params;
+}
+
+export function getRandNumber(min: number, max: number) {
+  return min + Math.random() * (max - min);
 }

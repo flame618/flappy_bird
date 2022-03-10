@@ -1,6 +1,7 @@
 import { BGHeight, BGWidth, landHeight, moveSpeed, pipeWidth } from "../const";
 import bus from "../event/bus";
 import EventType from "../event/event-type";
+import { getRandNumber } from "../util";
 
 const {ccclass, property} = cc._decorator;
 
@@ -11,7 +12,6 @@ export enum PipeType {
 
 @ccclass
 export default class Pipe extends cc.Component {
-
   name: 'Pipe'
 
   @property(cc.Node)
@@ -35,14 +35,21 @@ export default class Pipe extends cc.Component {
     }
   }
 
+  /** 开始游戏 */
   begin() {
     this.schedule(this.handlePipe, 1.5, cc.macro.REPEAT_FOREVER);
   }
 
+  /** 结束游戏 */
   end() {
     this.unscheduleAllCallbacks();
   }
 
+  /**
+   * 生成一个新管道
+   * @param pipeType 管道类型
+   * @returns 
+   */
   generateNewPipe(pipeType: PipeType) {
     // 从对象池获取一个节点实例
     const pipe = this.pool.get();
@@ -54,11 +61,12 @@ export default class Pipe extends cc.Component {
     return pipe;
   }
 
+  /** 控制管道生成和移动 */
   handlePipe() {
-    const gap = this.getRandNumber(90, 120);
+    const gap = getRandNumber(90, 120);
     const maxUpY = BGHeight / 2 - 50, minDownY = (-BGHeight / 2) + landHeight + 50;
     const minUpY = minDownY + gap;
-    const upY = this.getRandNumber(minUpY, maxUpY);
+    const upY = getRandNumber(minUpY, maxUpY);
     const downY = upY - gap;
     const newUpPipe = this.generateNewPipe(PipeType.Up);
     const newDownPipe = this.generateNewPipe(PipeType.Down);
@@ -73,6 +81,7 @@ export default class Pipe extends cc.Component {
     }, toCenterTime)
   }
 
+  /** 放置管道到场景中并添加相应缓动动画 */
   putPipe(pipe: cc.Node, posY: number) {
     // 初始位置放置到屏幕右边缘
     pipe.setPosition(170, posY);
@@ -86,15 +95,13 @@ export default class Pipe extends cc.Component {
     cc.tween(pipe).then(moveLandAnim).then(resetLand).start();
   }
 
-  getRandNumber(min: number, max: number) {
-    return min + Math.random() * (max - min);
-  }
-
+  /** 重置游戏 */
   reset() {
     this.pipeContainer.removeAllChildren();
     this.initNodePool();
   }
 
+  /** 销毁回调 */
   onDestroy() {
     this.end();
     this.pool.clear();
