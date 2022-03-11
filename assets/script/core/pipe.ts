@@ -14,8 +14,8 @@ export enum PipeType {
 export default class Pipe extends cc.Component {
   name: 'Pipe'
 
-  @property(cc.Node)
-  pipe: cc.Node = null;
+  @property(cc.Prefab)
+  pipe: cc.Prefab = null;
 
   @property(cc.Node)
   pipeContainer: cc.Node = null;
@@ -52,6 +52,7 @@ export default class Pipe extends cc.Component {
    */
   generateNewPipe(pipeType: PipeType) {
     // 从对象池获取一个节点实例
+    console.warn('poolSize', this.pool.size())
     const pipe = this.pool.get();
     if (pipeType === PipeType.Down) {
       pipe.scaleY = -1;
