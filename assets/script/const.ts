@@ -18,6 +18,9 @@ export const pipeWidth = 52;
 /** 小鸟宽度 */
 export const birdWidth = 34;
 
+/** 管道距离上下边界的最小距离，太小了会导致生成管道中间口差距过大 */
+export const pipeBuffer = 50;
+
 /** (背景)移动速度 */
 export const moveSpeed = 128;
 

@@ -1,4 +1,4 @@
-import { BGHeight, BGWidth, landHeight, moveSpeed, pipeWidth } from "../const";
+import { BGHeight, BGWidth, landHeight, moveSpeed, pipeBuffer, pipeWidth } from "../const";
 import bus from "../event/bus";
 import EventType from "../event/event-type";
 import { getRandNumber } from "../util";
@@ -64,10 +64,17 @@ export default class Pipe extends cc.Component {
 
   /** 控制管道生成和移动 */
   handlePipe() {
+    /** 随机生成管道间隙 */
     const gap = getRandNumber(90, 120);
-    const maxUpY = BGHeight / 2 - 50, minDownY = (-BGHeight / 2) + landHeight + 50;
+    /** 上管道的最大y坐标 */
+    const maxUpY = BGHeight / 2 - pipeBuffer;
+    /** 下管道的最小y坐标 */
+    const minDownY = (-BGHeight / 2) + landHeight + pipeBuffer;
+    /** 上管道的最小y坐标 */
     const minUpY = minDownY + gap;
+    /** 随机生成上管道y坐标 */
     const upY = getRandNumber(minUpY, maxUpY);
+    /** 随机生成下管道y坐标 */
     const downY = upY - gap;
     const newUpPipe = this.generateNewPipe(PipeType.Up);
     const newDownPipe = this.generateNewPipe(PipeType.Down);

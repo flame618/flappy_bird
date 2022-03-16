@@ -26,14 +26,17 @@ export default class UI extends cc.Component {
     this._finishedAnimComp = this.finishedContainer.getComponent(cc.Animation);
   }
 
+  /** 展示游戏开始前的UI */
   showInitUI() {
     this.beforeContainer.active = true;
   }
 
+  /** 隐藏游戏开始前的UI */
   hideInitUI() {
     this.beforeContainer.active = false;
   }
 
+  /** 展示游戏结束的UI */
   showFinishedUI() {
 		// 播放动画前先给场景加上遮罩，防止用户点击导致意外bug
 		this.setMask(true);
@@ -44,10 +47,12 @@ export default class UI extends cc.Component {
 		})
   }
 
+  /** 隐藏游戏结束的UI */
   hideFinishedUI() {
     this.finishedContainer.y = 400;
   }
 
+  /** 设置屏蔽整个页面事件的mask */
   setMask(show: boolean) {
 		this.maskNode.active = show;
 	}

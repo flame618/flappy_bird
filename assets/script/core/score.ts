@@ -67,11 +67,6 @@ export default class Score extends cc.Component {
     audioManager.playEffect(SoundEffect.Point);
   }
 
-  /** 获取当前分数 */
-  getScore() {
-    return this.score;
-  }
-
   /**
    * 渲染分数
    * @param container 分数容器节点

@@ -34,11 +34,17 @@ export default class Bird extends cc.Component {
 
   /** 跳跃 */
   jump () {
+    // 设置小鸟的线性速度
     this.rigidComp.linearVelocity = cc.v2(0, 300);
+    // 停止上一次动画
     this.stopTween();
+    // 设置小鸟跳跃时的旋转动画，因为它要恢复头朝上的姿势
     this._jumpRotateTween = cc.tween(this.birdNode).to(0.1, {angle: 30}).start();
+    // 设置小鸟角速度为0，不能因为之前的碰撞而在空中不停转动
     this.rigidComp.angularVelocity = 0;
+    // 播放跳跃音效
     audioManager.playEffect(SoundEffect.Wing);
+    // 跳跃0.6秒后，开始调整为下落姿势，头朝下
     this._dropRotateTween = cc.tween(this.birdNode).delay(0.6).to(0.3, {angle: -90}).start();
   }
 

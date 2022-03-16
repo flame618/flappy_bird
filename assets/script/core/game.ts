@@ -29,22 +29,24 @@ export default class Game extends cc.Component {
 	@property(cc.Node)
 	readyNode: cc.Node = null;
 
-	/** 上管道节点 */
-	@property(cc.Node)
-	pipeUp: cc.Node = null;
-
+	/** 游戏状态 */
 	gameState: GameState = GameState.Before;
 
 	private _pm = cc.director.getPhysicsManager();
 
+	/** pipe组件 */
 	pipeComp: Pipe = null;
 
+	/** bird组件 */
 	birdComp: Bird = null;
 
+	/** score组件 */
 	scoreComp: Score = null;
 
+	/** land组件 */
 	landComp: Land = null;
 
+	/** ui组件 */
 	uiComp: UI = null;
 
 	onLoad() {
