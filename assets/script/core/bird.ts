@@ -1,5 +1,5 @@
 import { audioManager } from "../audio-manager";
-import { BGHeight, BGWidth, GameState, SoundEffect } from "../const";
+import { BGHeight, BGWidth, birdWidth, GameState, SoundEffect } from "../const";
 import bus from "../event/bus";
 import EventType from "../event/event-type";
 import Game from "./game";
@@ -85,8 +85,8 @@ export default class Bird extends cc.Component {
 
   update() {
     if (this.gameComp.gameState === GameState.Playing) {
-      if (this.birdNode.x < -(BGWidth + 2) / 2 || this.birdNode.y > BGHeight / 2 + 100) {
-        // 小鸟飞出背景边界, 飞出左边界秒死，飞出上边界有100px的缓冲
+      if (this.birdNode.x < -BGWidth / 2 || this.birdNode.x > BGWidth / 2 || this.birdNode.y > BGHeight / 2 + 100) {
+        // 小鸟飞出背景边界, 飞出左右边界秒死，飞出上边界有100px的缓冲
         bus.emit(EventType.BirdLeaveBG);
       }
     }
