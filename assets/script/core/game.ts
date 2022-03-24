@@ -32,6 +32,8 @@ export default class Game extends cc.Component {
 	/** 游戏状态 */
 	gameState: GameState = GameState.Before;
 
+	gameMode: GameMode = gameMode;
+
 	private _pm = cc.director.getPhysicsManager();
 
 	/** pipe组件 */
@@ -95,6 +97,13 @@ export default class Game extends cc.Component {
 		this.landComp.reset();
 	}
 
+	/** 游戏结束后，重新开始游戏 */
+	restartGame() {
+		this.uiComp.hideFinishedUI();
+		this.resetGame();
+		this.getReady();
+	}
+
 	/** 结束游戏 */
 	endGame() {
 		this.gameState = GameState.End;
@@ -129,7 +138,7 @@ export default class Game extends cc.Component {
 
 	private _onBirdCollide() {
 		if (this.gameState === GameState.Playing) {
-			if (gameMode === GameMode.Normal) {
+			if (this.gameMode === GameMode.Normal) {
 				this.endGame();
 			}
 			audioManager.playEffect(SoundEffect.Hit);
@@ -158,8 +167,8 @@ export default class Game extends cc.Component {
 	}
 
 	private _onPlayNodeClick() {
-		this.uiComp.hideFinishedUI();
-		this.resetGame();
-		this.getReady();
+		// 恢复为url参数中设置的游戏模式
+		this.gameMode = gameMode;
+		this.restartGame();
 	}
 }

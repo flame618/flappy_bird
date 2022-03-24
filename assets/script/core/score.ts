@@ -1,6 +1,7 @@
 import { audioManager } from "../audio-manager";
-import { SoundEffect } from "../const";
+import { GameMode, SoundEffect } from "../const";
 import { loadDirResource } from "../util";
+import Game from "./game";
 
 const {ccclass, property} = cc._decorator;
 
@@ -55,6 +56,7 @@ export default class Score extends cc.Component {
       const bToNumber = Number(b.name.split('_')[1]);
       return aToNumber - bToNumber; 
     })
+    this.medalNode.on(cc.Node.EventType.TOUCH_START, this._onTouchMedal, this);
   }
 
   begin() {
@@ -113,6 +115,24 @@ export default class Score extends cc.Component {
 
   reset() {
     this.score = 0;
+  }
+
+  private _touchMedalCount = 0;
+
+  private _onTouchMedal() {
+    this._touchMedalCount++;
+    if (this._touchMedalCount === 1) {
+      this.scheduleOnce(() => {
+        this._touchMedalCount = 0;
+      }, 1);
+    } else if (this._touchMedalCount === 3) {
+      // 1s之内点击3次触发彩蛋
+      const gameComp = this.getComponent(Game);
+      // 强制游戏模式为简单
+      gameComp.gameMode = GameMode.Easy;
+      // 重新开始游戏
+      gameComp.restartGame();
+    }
   }
   
   /**
